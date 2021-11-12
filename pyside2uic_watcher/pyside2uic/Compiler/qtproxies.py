@@ -125,9 +125,13 @@ class ProxyClass(ProxyBase):
             self._uic_name = "Unnamed"
 
         if not noInstantiation:
+            is_layout = issubclass(self.__class__,QtWidgets.QLayout)
+            has_dot = str(self.__class__).count(".")
+            is_one = len(args) == 1
+            condition = is_layout and has_dot or not is_one 
             funcall = "%s(%s)" % \
                     (moduleMember(self.module, self.__class__.__name__),
-                    ", ".join(map(str, args)))
+                    ", ".join(map(str, args)) if condition else "parent=%s" % args[0])
 
             if objectname:
                 funcall = "%s = %s" % (objectname, funcall)
