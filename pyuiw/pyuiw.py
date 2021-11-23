@@ -24,12 +24,12 @@
 import sys
 import optparse
 
-from PySide2 import QtCore
+import Qt
 from pyside2uic.driver import Driver
-from PySide2 import __version__ as PySideVersion
 from pyside2uic import __version__ as PySideUicVersion
 
-Version = "PySide2 User Interface Compiler version %s, running on PySide2 %s." % (PySideUicVersion, PySideVersion)
+QtVersion = Qt.QtCore.qVersion()
+Version = "PySide2 User Interface Compiler version %s, running on %s %s." % (PySideUicVersion,Qt.__binding__, QtVersion)
 
 def main():
     if sys.hexversion >= 0x03000000:
