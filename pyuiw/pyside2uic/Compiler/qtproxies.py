@@ -22,7 +22,7 @@
 
 
 # Import built-in modules
-import re
+import os
 import sys
 
 # Import third-party modules
@@ -84,7 +84,10 @@ class i18n_string(object):
         else:
             disambig = as_string(self.disambig, encode=False)
 
-        return 'QtWidgets.QApplication.translate("%s", %s, %s, -1)' % (
+        is_Qt = os.getenv("pyuiw_isUseQt", "true")
+        is_Qt = True if is_Qt == "true" else False
+        return '%s("%s", %s, %s, -1)' % (
+            "QtCompat.translate" if is_Qt else "QtWidgets.QApplication.translate",
             i18n_context,
             as_string(self.string, encode=False),
             disambig,

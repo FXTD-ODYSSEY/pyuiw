@@ -1,5 +1,6 @@
-# pyside2uic-watcher
-A command line file watcher for auto compile Qt ui file to python file.
+# pyuiw
+
+Command Line Watcher for auto compile Qt ui to python file.
 
 ## Install
 
@@ -8,7 +9,7 @@ pip install pyuiw
 ```
 
 
-## How to
+## How to Use
 
 
 
@@ -16,8 +17,8 @@ pip install pyuiw
 
 - [ ] import code to the top (implement isort)
 - [ ] black format code
-- [ ] configurable Code generate
-- [ ] implement Qt.py for `QApplication.translate`
-- [ ] customize import
+- [x] implement Qt.py for `QApplication.translate`
+- [x] customize import
 - [ ] unittest
-- [ ] poetry for python package
+- [ ] poetry pypi python package
+- [ ] poetry command line tool

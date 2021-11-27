@@ -39,16 +39,16 @@ version_files = [
 [tool.black]
 line-length = 88
 target_version = ['py37']
-include = '\.pyi?$'
+include = '/.pyi?$'
 exclude = '''
 (
   /(
-      \.eggs         # exclude a few common directories in the
-    | \.git          # root of the project
-    | \.hg
-    | \.mypy_cache
-    | \.tox
-    | \.venv
+      /.eggs         # exclude a few common directories in the
+    | /.git          # root of the project
+    | /.hg
+    | /.mypy_cache
+    | /.tox
+    | /.venv
     | _build
     | buck-out
     | build
@@ -100,3 +100,7 @@ commands = python -c "print(123)"
 
 [tool.flake8]
 max-line-length=88
+
+
+[tool.pyuiw]
+watch=["F:/tencent_git/AppManager/python/ui"]
