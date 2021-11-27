@@ -19,12 +19,12 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 # 02110-1301 USA
 
+# Import built-in modules
 import string
 
 
 # A translation table for converting ASCII lower case to upper case.
-_ascii_trans_table = string.maketrans(string.ascii_lowercase,
-        string.ascii_uppercase)
+_ascii_trans_table = string.maketrans(string.ascii_lowercase, string.ascii_uppercase)
 
 
 # Convert a string to ASCII upper case irrespective of the current locale.

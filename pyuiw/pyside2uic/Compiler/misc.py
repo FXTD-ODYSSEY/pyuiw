@@ -21,6 +21,7 @@
 # 02110-1301 USA
 
 
+# Import third-party modules
 from pyside2uic.Compiler.indenter import write_code
 
 
@@ -42,6 +43,7 @@ class Literal(object):
     """Literal(string) -> new literal
 
     string will not be quoted when put into an argument list"""
+
     def __init__(self, string):
         self.string = string
 

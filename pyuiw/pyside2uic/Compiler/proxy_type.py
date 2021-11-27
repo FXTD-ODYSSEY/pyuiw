@@ -20,7 +20,9 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 # 02110-1301 USA
 
-from pyside2uic.Compiler.misc import Literal, moduleMember
+# Import third-party modules
+from pyside2uic.Compiler.misc import Literal
+from pyside2uic.Compiler.misc import moduleMember
 
 
 class ProxyType(type):
@@ -42,15 +44,25 @@ class ProxyType(type):
                 raise
 
             # Avoid a circular import.
+            # Import third-party modules
             from pyside2uic.Compiler.qtproxies import LiteralProxyClass
 
-            return type(name, (LiteralProxyClass, ),
-                        {"module": moduleMember(type.__getattribute__(cls, "module"),
-                                                type.__getattribute__(cls, "__name__"))})
+            return type(
+                name,
+                (LiteralProxyClass,),
+                {
+                    "module": moduleMember(
+                        type.__getattribute__(cls, "module"),
+                        type.__getattribute__(cls, "__name__"),
+                    )
+                },
+            )
 
     def __str__(cls):
-        return moduleMember(type.__getattribute__(cls, "module"),
-                            type.__getattribute__(cls, "__name__"))
+        return moduleMember(
+            type.__getattribute__(cls, "module"),
+            type.__getattribute__(cls, "__name__"),
+        )
 
     def __or__(self, r_op):
         return Literal("%s|%s" % (self, r_op))

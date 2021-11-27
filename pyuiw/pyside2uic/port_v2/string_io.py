@@ -22,6 +22,8 @@
 
 # Import the StringIO object.
 try:
+    # Import third-party modules
     from cStringIO import StringIO
 except ImportError:
+    # Import third-party modules
     from StringIO import StringIO

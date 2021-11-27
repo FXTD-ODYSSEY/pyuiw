@@ -20,11 +20,12 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 # 02110-1301 USA
 
+# Import third-party modules
 from pyside2uic.exceptions import NoSuchWidgetError
 
 
 def invoke(driver):
-    """ Invoke the given command line driver.  Return the exit status to be
+    """Invoke the given command line driver.  Return the exit status to be
     passed back to the parent process.
     """
 

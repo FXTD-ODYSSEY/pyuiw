@@ -21,16 +21,21 @@
 # 02110-1301 USA
 
 
+# Import built-in modules
 import logging
+
 
 try:
     set()
 except NameError:
     from sets import Set as set
 
+# Import third-party modules
 from pyside2uic.Compiler.indenter import write_code
-from pyside2uic.Compiler.qtproxies import (QtWidgets, QtGui, Literal,
-                                           strict_getattr)
+from pyside2uic.Compiler.qtproxies import Literal
+from pyside2uic.Compiler.qtproxies import QtGui
+from pyside2uic.Compiler.qtproxies import QtWidgets
+from pyside2uic.Compiler.qtproxies import strict_getattr
 
 
 logger = logging.getLogger(__name__)
@@ -62,7 +67,7 @@ class _ModuleWrapper(object):
         if "." in name:
             idx = name.rfind(".")
             self._package = name[:idx]
-            self._module = name[idx + 1:]
+            self._module = name[idx + 1 :]
         else:
             self._package = None
             self._module = name
@@ -94,20 +99,22 @@ class _CustomWidgetLoader(object):
         assert widgetClass not in self._widgets
         self._widgets[widgetClass] = (baseClass, module)
 
-
     def _resolveBaseclass(self, baseClass):
         try:
             for x in range(0, 10):
-                try: return strict_getattr(QtWidgets, baseClass)
-                except AttributeError: pass
+                try:
+                    return strict_getattr(QtWidgets, baseClass)
+                except AttributeError:
+                    pass
 
                 baseClass = self._widgets[baseClass][0]
             else:
-                raise ValueError("baseclass resolve took too long, check custom widgets")
+                raise ValueError(
+                    "baseclass resolve took too long, check custom widgets"
+                )
 
         except KeyError:
             raise ValueError("unknown baseclass %s" % baseClass)
-
 
     def search(self, cls):
         try:
@@ -115,8 +122,7 @@ class _CustomWidgetLoader(object):
             baseClass = self._resolveBaseclass(self._widgets[cls][0])
             DEBUG("resolved baseclass of %s: %s" % (cls, baseClass))
 
-            return type(cls, (baseClass,),
-                        {"module" : ""})
+            return type(cls, (baseClass,), {"module": ""})
 
         except KeyError:
             return None
@@ -151,7 +157,14 @@ class CompilerCreatorPolicy(object):
         self._modules.append(cw)
         return cw
 
-    def instantiate(self, clsObject, objectname, ctor_args, is_attribute=True, no_instantiation=False):
+    def instantiate(
+        self,
+        clsObject,
+        objectname,
+        ctor_args,
+        is_attribute=True,
+        no_instantiation=False,
+    ):
         return clsObject(objectname, is_attribute, ctor_args, no_instantiation)
 
     def invoke(self, rname, method, args):

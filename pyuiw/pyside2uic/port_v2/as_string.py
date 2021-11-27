@@ -19,12 +19,13 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 # 02110-1301 USA
 
+# Import built-in modules
 import re
 
 
 def as_string(obj, encode=True):
     if isinstance(obj, basestring):
-        s = '"' + _escape(obj.encode('UTF-8')) + '"'
+        s = '"' + _escape(obj.encode("UTF-8")) + '"'
         return s
 
     return str(obj)
@@ -32,9 +33,10 @@ def as_string(obj, encode=True):
 
 _esc_regex = re.compile(r"(\"|\'|\\)")
 
+
 def _escape(text):
     # This escapes any escaped single or double quote or backslash.
     x = _esc_regex.sub(r"\\\1", text)
 
     # This replaces any '\n' with an escaped version and a real line break.
-    return re.sub(r'\n', r'\\n"\n"', x)
+    return re.sub(r"\n", r'\\n"\n"', x)

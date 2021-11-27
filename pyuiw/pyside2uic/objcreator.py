@@ -20,20 +20,26 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 # 02110-1301 USA
 
-import sys
+# Import built-in modules
 import os.path
+import sys
 
-from pyside2uic.exceptions import NoSuchWidgetError, WidgetPluginError
+# Import third-party modules
+from pyside2uic.exceptions import NoSuchWidgetError
+from pyside2uic.exceptions import WidgetPluginError
+
 
 if sys.hexversion >= 0x03000000:
+    # Import third-party modules
     from pyside2uic.port_v3.load_plugin import load_plugin
 else:
+    # Import third-party modules
     from pyside2uic.port_v2.load_plugin import load_plugin
 
 
 # The list of directories that are searched for widget plugins.  This is
 # exposed as part of the API.
-widgetPluginPath = [os.path.join(os.path.dirname(__file__), 'widget-plugins')]
+widgetPluginPath = [os.path.join(os.path.dirname(__file__), "widget-plugins")]
 
 
 MATCH = True
@@ -47,8 +53,10 @@ class QObjectCreator(object):
         self._cpolicy = creatorPolicy
 
         self._cwFilters = []
-        self._modules = [self._cpolicy.createQtWidgetsWrapper(),
-                         self._cpolicy.createQtGuiWrapper()]
+        self._modules = [
+            self._cpolicy.createQtWidgetsWrapper(),
+            self._cpolicy.createQtGuiWrapper(),
+        ]
 
         # Get the optional plugins.
         for plugindir in widgetPluginPath:
@@ -58,7 +66,7 @@ class QObjectCreator(object):
                 plugins = []
 
             for filename in plugins:
-                if not filename.endswith('.py') or filename == '__init__.py':
+                if not filename.endswith(".py") or filename == "__init__.py":
                     continue
 
                 filename = os.path.join(plugindir, filename)
@@ -67,7 +75,8 @@ class QObjectCreator(object):
                     "MODULE": MODULE,
                     "CW_FILTER": CW_FILTER,
                     "MATCH": MATCH,
-                    "NO_MATCH": NO_MATCH}
+                    "NO_MATCH": NO_MATCH,
+                }
 
                 plugin_locals = {}
 
@@ -75,7 +84,9 @@ class QObjectCreator(object):
                     pluginType = plugin_locals["pluginType"]
                     if pluginType == MODULE:
                         modinfo = plugin_locals["moduleInformation"]()
-                        self._modules.append(self._cpolicy.createModuleWrapper(*modinfo))
+                        self._modules.append(
+                            self._cpolicy.createModuleWrapper(*modinfo)
+                        )
                     elif pluginType == CW_FILTER:
                         self._cwFilters.append(plugin_locals["getFilter"]())
                     else:

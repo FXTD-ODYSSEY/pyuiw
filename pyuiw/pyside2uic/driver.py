@@ -21,21 +21,23 @@
 # 02110-1301 USA
 
 
-import sys
+# Import built-in modules
 import logging
+import sys
 
+# Import third-party modules
 from pyside2uic import compileUi
 
 
 class Driver(object):
-    """ This encapsulates access to the pyuic functionality so that it can be
+    """This encapsulates access to the pyuic functionality so that it can be
     called by code that is Python v2/v3 specific.
     """
 
-    LOGGER_NAME = 'PySide2.uic'
+    LOGGER_NAME = "PySide2.uic"
 
     def __init__(self, opts, ui_file):
-        """ Initialise the object.  opts is the parsed options.  ui_file is the
+        """Initialise the object.  opts is the parsed options.  ui_file is the
         name of the .ui file.
         """
 
@@ -50,7 +52,7 @@ class Driver(object):
         self._ui_file = ui_file
 
     def invoke(self):
-        """ Invoke the action as specified by the parsed options.  Returns 0 if
+        """Invoke the action as specified by the parsed options.  Returns 0 if
         there was no error.
         """
 
@@ -62,12 +64,13 @@ class Driver(object):
         return 0
 
     def _preview(self):
-        """ Preview the .ui file.  Return the exit status to be passed back to
+        """Preview the .ui file.  Return the exit status to be passed back to
         the parent process.
         """
 
-        from PySide2 import QtUiTools
+        # Import third-party modules
         from PySide2 import QtGui
+        from PySide2 import QtUiTools
         from PySide2 import QtWidgets
 
         app = QtWidgets.QApplication([self._ui_file])
@@ -77,35 +80,42 @@ class Driver(object):
         return app.exec_()
 
     def _generate(self):
-        """ Generate the Python code. """
+        """Generate the Python code."""
 
         if sys.hexversion >= 0x03000000:
-            if self._opts.output == '-':
+            if self._opts.output == "-":
+                # Import built-in modules
                 from io import TextIOWrapper
 
-                pyfile = TextIOWrapper(sys.stdout.buffer, encoding='utf8')
+                pyfile = TextIOWrapper(sys.stdout.buffer, encoding="utf8")
             else:
-                pyfile = open(self._opts.output, 'wt', encoding='utf8')
+                pyfile = open(self._opts.output, "wt", encoding="utf8")
         else:
-            if self._opts.output == '-':
+            if self._opts.output == "-":
                 pyfile = sys.stdout
             else:
-                pyfile = open(self._opts.output, 'wt')
+                pyfile = open(self._opts.output, "wt")
 
-        compileUi(self._ui_file, pyfile, self._opts.execute, self._opts.indent, self._opts.from_imports)
+        compileUi(
+            self._ui_file,
+            pyfile,
+            self._opts.execute,
+            self._opts.indent,
+            self._opts.from_imports,
+        )
 
     def on_IOError(self, e):
-        """ Handle an IOError exception. """
+        """Handle an IOError exception."""
 
-        sys.stderr.write("Error: %s: \"%s\"\n" % (e.strerror, e.filename))
+        sys.stderr.write('Error: %s: "%s"\n' % (e.strerror, e.filename))
 
     def on_SyntaxError(self, e):
-        """ Handle a SyntaxError exception. """
+        """Handle a SyntaxError exception."""
 
         sys.stderr.write("Error in input file: %s\n" % e)
 
     def on_NoSuchWidgetError(self, e):
-        """ Handle a NoSuchWidgetError exception. """
+        """Handle a NoSuchWidgetError exception."""
 
         if e.args[0].startswith("Q3"):
             sys.stderr.write("Error: Q3Support widgets are not supported by PySide2.\n")
@@ -113,16 +123,20 @@ class Driver(object):
             sys.stderr.write(str(e) + "\n")
 
     def on_Exception(self, e):
-        """ Handle a generic exception. """
+        """Handle a generic exception."""
 
         if logging.getLogger(self.LOGGER_NAME).level == logging.DEBUG:
+            # Import built-in modules
             import traceback
 
             traceback.print_exception(*sys.exc_info())
         else:
+            # Import third-party modules
             from PySide2 import QtCore
 
-            sys.stderr.write("""An unexpected error occurred.
+            sys.stderr.write(
+                """An unexpected error occurred.
 Check that you are using the latest version of PySide2 and report the error to
 http://bugs.openbossa.org, including the ui file used to trigger the error.
-""")
+"""
+            )

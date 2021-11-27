@@ -22,6 +22,7 @@
 # 02110-1301 USA
 
 
+# Import built-in modules
 import os.path
 
 
@@ -35,11 +36,11 @@ class IconCache(object):
 
         self._object_factory = object_factory
         self._qtgui_module = qtgui_module
-        self._base_dir = ''
+        self._base_dir = ""
         self._cache = []
 
     def set_base_dir(self, base_dir):
-        """ Set the base directory to be used for all relative filenames. """
+        """Set the base directory to be used for all relative filenames."""
 
         self._base_dir = base_dir
 
@@ -58,14 +59,15 @@ class IconCache(object):
             iset = self._cache[idx]
         else:
             # Follow uic's naming convention.
-            name = 'icon'
+            name = "icon"
             idx = len(self._cache)
 
             if idx > 0:
                 name += str(idx)
 
-            icon = self._object_factory.createQObject("QIcon", name, (),
-                    is_attribute=False)
+            icon = self._object_factory.createQObject(
+                "QIcon", name, (), is_attribute=False
+            )
             iset.set_icon(icon, self._qtgui_module)
             self._cache.append(iset)
 
@@ -98,11 +100,11 @@ class _IconSet(object):
 
     @staticmethod
     def _file_name(fname, base_dir):
-        """ Convert a relative filename if we have a base directory. """
+        """Convert a relative filename if we have a base directory."""
 
         fname = fname.replace("\\", "\\\\")
 
-        if base_dir != '' and fname[0] != ':' and not os.path.isabs(fname):
+        if base_dir != "" and fname[0] != ":" and not os.path.isabs(fname):
             fname = os.path.join(base_dir, fname)
 
         return fname

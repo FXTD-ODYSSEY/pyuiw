@@ -24,7 +24,10 @@ __all__ = ("compileUi", "compileUiDir", "widgetPluginPath")
 
 __version__ = ""
 
-from pyside2uic.Compiler import indenter, compiler
+# Import third-party modules
+from pyside2uic.Compiler import compiler
+from pyside2uic.Compiler import indenter
+
 
 _header = """# -*- coding: utf-8 -*-
 
@@ -69,14 +72,15 @@ def compileUiDir(dir, recurse=False, map=None, **compileUi_args):
     the compileUi() function that is called to create each Python module.
     """
 
+    # Import built-in modules
     import os
 
     # Compile a single .ui file.
     def compile_ui(ui_dir, ui_file):
         # Ignore if it doesn't seem to be a .ui file.
-        if ui_file.endswith('.ui'):
+        if ui_file.endswith(".ui"):
             py_dir = ui_dir
-            py_file = ui_file[:-3] + '.py'
+            py_file = ui_file[:-3] + ".py"
 
             # Allow the caller to change the name of the .py file or generate
             # it in a different directory.
@@ -92,8 +96,8 @@ def compileUiDir(dir, recurse=False, map=None, **compileUi_args):
             ui_path = os.path.join(ui_dir, ui_file)
             py_path = os.path.join(py_dir, py_file)
 
-            ui_file = open(ui_path, 'r')
-            py_file = open(py_path, 'w')
+            ui_file = open(ui_path, "r")
+            py_file = open(py_path, "w")
 
             try:
                 compileUi(ui_file, py_file, **compileUi_args)
@@ -126,7 +130,10 @@ def compileUi(uifile, pyfile, execute=False, indent=4, from_imports=False):
     relative to '.'.
     """
 
+    # Import built-in modules
     from time import ctime
+
+    # Import third-party modules
     import PySide2
 
     try:
@@ -145,5 +152,6 @@ def compileUi(uifile, pyfile, execute=False, indent=4, from_imports=False):
         indenter.write_code(_display_code % winfo)
 
 
+# Import third-party modules
 # The list of directories that are searched for widget plugins.
 from pyside2uic.objcreator import widgetPluginPath

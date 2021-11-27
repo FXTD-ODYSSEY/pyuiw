@@ -24,6 +24,7 @@ indentwidth = 4
 
 _indenter = None
 
+
 class _IndentedCodeWriter(object):
     def __init__(self, output):
         self.level = 0
@@ -52,8 +53,10 @@ def createCodeIndenter(output):
     global _indenter
     _indenter = _IndentedCodeWriter(output)
 
+
 def getIndenter():
     return _indenter
+
 
 def write_code(string):
     _indenter.write(string)

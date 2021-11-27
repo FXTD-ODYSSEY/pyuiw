@@ -20,21 +20,29 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 # 02110-1301 USA
 
+# Import built-in modules
 import sys
 
+# Import third-party modules
+from pyside2uic.Compiler import qtproxies
+from pyside2uic.Compiler.indenter import createCodeIndenter
+from pyside2uic.Compiler.indenter import getIndenter
+from pyside2uic.Compiler.indenter import write_code
+from pyside2uic.Compiler.misc import write_import
+from pyside2uic.Compiler.qobjectcreator import CompilerCreatorPolicy
 from pyside2uic.properties import Properties
 from pyside2uic.uiparser import UIParser
-from pyside2uic.Compiler import qtproxies
-from pyside2uic.Compiler.indenter import createCodeIndenter, getIndenter, \
-        write_code
-from pyside2uic.Compiler.qobjectcreator import CompilerCreatorPolicy
-from pyside2uic.Compiler.misc import write_import
 
 
 class UICompiler(UIParser):
     def __init__(self):
-        UIParser.__init__(self, qtproxies.QtCore, qtproxies.QtGui, qtproxies.QtWidgets,
-                CompilerCreatorPolicy())
+        UIParser.__init__(
+            self,
+            qtproxies.QtCore,
+            qtproxies.QtGui,
+            qtproxies.QtWidgets,
+            CompilerCreatorPolicy(),
+        )
 
     def reset(self):
         qtproxies.i18n_strings = []
@@ -54,9 +62,9 @@ class UICompiler(UIParser):
         indenter.indent()
         indenter.write("def setupUi(self, %s):" % widgetname)
         indenter.indent()
-        w = self.factory.createQObject(classname, widgetname, (),
-                                   is_attribute = False,
-                                   no_instantiation = True)
+        w = self.factory.createQObject(
+            classname, widgetname, (), is_attribute=False, no_instantiation=True
+        )
         w.baseclass = classname
         w.uiclass = "Ui_%s" % self.uiname
         return w
@@ -98,6 +106,8 @@ class UICompiler(UIParser):
         for res in self._resources:
             write_import(res, from_imports)
 
-        return {"widgetname": str(w),
-                "uiclass" : w.uiclass,
-                "baseclass" : w.baseclass}
+        return {
+            "widgetname": str(w),
+            "uiclass": w.uiclass,
+            "baseclass": w.baseclass,
+        }

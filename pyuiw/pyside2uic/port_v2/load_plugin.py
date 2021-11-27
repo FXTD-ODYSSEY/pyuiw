@@ -20,11 +20,12 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 # 02110-1301 USA
 
+# Import third-party modules
 from pyside2uic.exceptions import WidgetPluginError
 
 
 def load_plugin(plugin, plugin_globals, plugin_locals):
-    """ Load the given plugin (which is an open file).  Return True if the
+    """Load the given plugin (which is an open file).  Return True if the
     plugin was loaded, or False if it wanted to be ignored.  Raise an exception
     if there was an error.
     """
@@ -33,7 +34,7 @@ def load_plugin(plugin, plugin_globals, plugin_locals):
         exec(plugin.read(), plugin_globals, plugin_locals)
     except ImportError:
         return False
-    except Exception, e:
+    except Exception as e:
         raise WidgetPluginError("%s: %s" % (e.__class__, str(e)))
 
     return True
