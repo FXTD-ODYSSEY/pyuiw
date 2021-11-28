@@ -19,14 +19,22 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 # 02110-1301 USA
+# Import future modules
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+# Import local modules
+from pyuiw.uic.Compiler import compiler
+from pyuiw.uic.Compiler import indenter
+
+# The list of directories that are searched for widget plugins.
+from pyuiw.uic.objcreator import widgetPluginPath
+
 
 __all__ = ("compileUi", "compileUiDir", "widgetPluginPath")
 
 __version__ = ""
-
-# Import third-party modules
-from pyuiw.uic.Compiler import compiler
-from pyuiw.uic.Compiler import indenter
 
 
 _header = """# -*- coding: utf-8 -*-
@@ -145,13 +153,6 @@ def compileUi(uifile, pyfile, execute=False, indent=4, from_imports=False):
 
     global PySideToolsVersion
     pyfile.write(_header % (uifname, ctime(), __version__, QtCore.qVersion()))
-
     winfo = compiler.UICompiler().compileUi(uifile, pyfile, from_imports)
-
     if execute:
         indenter.write_code(_display_code % winfo)
-
-
-# Import third-party modules
-# The list of directories that are searched for widget plugins.
-from pyuiw.uic.objcreator import widgetPluginPath

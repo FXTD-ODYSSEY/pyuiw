@@ -10,11 +10,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-
-__author__ = "timmyliang"
-__email__ = "820472580@qq.com"
-__date__ = "2020-12-04 10:50:02"
-
 # Import built-in modules
 import argparse
 import copy
@@ -27,25 +22,33 @@ from string import Template
 import subprocess
 import sys
 
+# Import third-party modules
+import Qt
+from Qt import QtCore
+from Qt import QtWidgets
+import isort
+import toml
+
+# Import local modules
+from pyuiw.uic import __version__ as PySideUicVersion
+from pyuiw.uic.driver import Driver
+
+
+__author__ = "timmyliang"
+__email__ = "820472580@qq.com"
+__date__ = "2020-12-04 10:50:02"
+
 
 FILE = Path(__file__)
 DIR = FILE.parent
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-# Import third-party modules
-import Qt
-from Qt import QtCore
-from Qt import QtWidgets
-from pyuiw.uic import __version__ as PySideUicVersion
-from pyuiw.uic.driver import Driver
-import toml
-
 
 if sys.hexversion >= 0x03000000:
-    # Import third-party modules
+    # Import local modules
     from pyuiw.uic.port_v3.invoke import invoke
 else:
-    # Import third-party modules
+    # Import local modules
     from pyuiw.uic.port_v2.invoke import invoke
 
 Version = "Qt User Interface Compiler version %s, running on %s %s." % (
@@ -93,28 +96,6 @@ class CliBase(object):
 
         return watch_list, exclude_list
 
-    def parse_single_ui(self, ui_file):
-        ui_file = Path(ui_file)
-        if not ui_file.is_file():
-            self.parser.print_usage()
-            sys.stderr.write("Error: one input ui-file must be specified\n")
-            return
-
-        opts = copy.deepcopy(self.opts)
-        opts.output = self.parse_exp(self.opts.output, ui_file)
-        ui_file = str(ui_file.absolute())
-
-        # FIXME: some ui file output empty in watch mode
-        invoke(Driver(opts, ui_file))
-
-        subprocess.call([sys.executable, "-m", "black", opts.output])
-        # FIXME: isort permission error when watching
-        # args = [sys.executable,"-m","isort",opts.output]
-        # subprocess.call(args)
-        # QtCore.QTimer.singleShot(0, partial(subprocess.call,args))
-
-        print("output: ", opts.output)
-
     def parse(self):
         self.opts, args = self.parser.parse_known_args()
         self.output = self.opts.output
@@ -139,31 +120,49 @@ class CliBase(object):
         app = QtWidgets.QApplication(sys.argv)
         watcher = QtCore.QFileSystemWatcher()
 
+        # TODO(timmyliang) exclude_list usage
         paths = []
         for path in watch_list:
             path = Path(path)
             if path.is_file():
-                paths.append(path)
-                watcher.addPath(str(path))
+                paths.append(str(path))
             elif path.is_dir():
                 for root, dirs, files in os.walk(path):
                     root = Path(root)
                     for f in files:
                         if f.endswith(".ui"):
-                            path = str(root / f)
-                            paths.append(path)
-                            watcher.addPath(path)
+                            paths.append(str(root / f))
 
+        # paths += [r"F:\repo\pyuiw\tests\ui\svnfixer2.ui"]
         print("watch ui files:\n" + "\n".join(paths))
         for ui_file in paths:
             self.parse_single_ui(ui_file)
+            watcher.addPath(str(ui_file))
 
         watcher.fileChanged.connect(self.on_file_change)
         app.exec_()
 
     def on_file_change(self, ui_file):
-        # QtCore.QTimer.singleShot(0, partial(self.parse_single_ui,[ui_file]))
         self.parse_single_ui(ui_file)
+
+    def parse_single_ui(self, ui_file):
+        ui_file = Path(ui_file)
+        if not ui_file.is_file():
+            self.parser.print_usage()
+            sys.stderr.write("Error: one input ui-file must be specified\n")
+            return
+
+        opts = copy.deepcopy(self.opts)
+        opts.output = self.parse_exp(self.opts.output, ui_file)
+        ui_file = str(ui_file.absolute())
+
+        # FIXME: some ui file output empty in watch mode
+        invoke(Driver(opts, ui_file))
+
+        subprocess.call([sys.executable, "-m", "black", opts.output])
+        subprocess.Popen([sys.executable, "-m", "isort", opts.output])
+
+        print("output: ", opts.output)
 
 
 class PyUIWatcherCli(CliBase):
@@ -199,8 +198,8 @@ class PyUIWatcherCli(CliBase):
             "-x",
             "--execute",
             dest="execute",
-            action="store_false",
-            default=False,
+            action="store_true",
+            default=True,
             help="generate extra code to test and display the class",
         )
         self.parser.add_argument(

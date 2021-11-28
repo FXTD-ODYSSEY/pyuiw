@@ -21,11 +21,16 @@
 # 02110-1301 USA
 
 
+# Import future modules
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 # Import built-in modules
 import logging
 import sys
 
-# Import third-party modules
+# Import local modules
 from pyuiw.uic import compileUi
 
 
@@ -102,6 +107,7 @@ class Driver(object):
             self._opts.indent,
             self._opts.from_imports,
         )
+        pyfile.close()
 
     def on_IOError(self, e):
         """Handle an IOError exception."""
