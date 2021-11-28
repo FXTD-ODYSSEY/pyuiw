@@ -69,9 +69,8 @@ class Driver(object):
         """
 
         # Import third-party modules
-        from PySide2 import QtGui
-        from PySide2 import QtUiTools
-        from PySide2 import QtWidgets
+        from Qt import QtWidgets
+        from Qt import _QtUiTools as QtUiTools
 
         app = QtWidgets.QApplication(sys.argv)
         widget = QtUiTools.QUiLoader().load(self._ui_file)
@@ -131,8 +130,6 @@ class Driver(object):
 
             traceback.print_exception(*sys.exc_info())
         else:
-            # Import third-party modules
-            from PySide2 import QtCore
 
             sys.stderr.write(
                 """An unexpected error occurred.

@@ -134,7 +134,7 @@ def compileUi(uifile, pyfile, execute=False, indent=4, from_imports=False):
     from time import ctime
 
     # Import third-party modules
-    import PySide2
+    from Qt import QtCore
 
     try:
         uifname = uifile.name
@@ -144,7 +144,7 @@ def compileUi(uifile, pyfile, execute=False, indent=4, from_imports=False):
     indenter.indentwidth = indent
 
     global PySideToolsVersion
-    pyfile.write(_header % (uifname, ctime(), __version__, PySide2.__version__))
+    pyfile.write(_header % (uifname, ctime(), __version__, QtCore.qVersion()))
 
     winfo = compiler.UICompiler().compileUi(uifile, pyfile, from_imports)
 
