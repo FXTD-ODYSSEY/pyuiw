@@ -4,7 +4,8 @@ description = "Command Line File Watcher for Qt ui file to python file."
 license = "MIT"
 name = "pyuiw"
 readme = "README.md"
-version = "0.1.0"
+repository = "https://github.com/FXTD-ODYSSEY/pyuiw"
+version = "0.2.0"
 
 [tool.poetry.dependencies]
 PySide2 = "^5.15.2"
@@ -109,10 +110,15 @@ commands =
     pyuiw -o ./tests/ui/svnfixer1.py ./tests/ui/svnfixer.ui
     python -m pyuiw -o ./tests/ui/svnfixer2.py ./tests/ui/svnfixer.ui
 
+[testenv:deploy]
+deps = poetry
+commands = python scripts/deploy.py
 """
 
 [tool.flake8]
 max-line-length = 88
 
 [tool.pyuiw]
-watch = ["./tests/ui2","./tests/ui"]
+exclude = ["*launcher*"]
+black = false
+watch = [" ./tests/ui"]
