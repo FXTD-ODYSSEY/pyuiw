@@ -126,6 +126,14 @@ class CliBase(object):
         if from_imports != False == self.opts.from_imports:
             self.opts.from_imports = from_imports
 
+        black = pyuiw.get("black", True)
+        if black != True == self.opts.black:
+            self.opts.black = black
+
+        isort = pyuiw.get("isort", True)
+        if isort != True == self.opts.isort:
+            self.opts.isort = isort
+
         return watch_list, exclude_list
 
     def parse(self):
@@ -200,8 +208,10 @@ class CliBase(object):
         # FIXME: some ui file output empty in watch mode
         invoke(Driver(opts, ui_file))
 
-        subprocess.call([sys.executable, "-m", "black", opts.output])
-        subprocess.Popen([sys.executable, "-m", "isort", opts.output])
+        if opts.black:
+            subprocess.call([sys.executable, "-m", "black", opts.output])
+        if opts.isort:
+            subprocess.Popen([sys.executable, "-m", "isort", opts.output])
 
         # print("output: ", opts.output)
 
@@ -285,6 +295,20 @@ class PyUIWatcherCli(CliBase):
             metavar="module",
             help="customize import Qt module name | only work in --useQt false",
         )
+        g.add_argument(
+            "--black",
+            dest="black",
+            action="store_true",
+            default=True,
+            help="using black format code",
+        )
+        g.add_argument(
+            "--isort",
+            dest="isort",
+            action="store_true",
+            default=True,
+            help="using isort format code",
+        )
         self.parser.add_argument_group(g)
 
         g = self.parser.add_argument_group(title="Watcher options")
@@ -316,6 +340,7 @@ class PyUIWatcherCli(CliBase):
             metavar="FILE",
             help="read specific config file",
         )
+
         self.parser.add_argument_group(g)
 
         self.parse()
