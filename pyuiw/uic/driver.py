@@ -26,7 +26,7 @@ import logging
 import sys
 
 # Import third-party modules
-from pyside2uic import compileUi
+from pyuiw.uic import compileUi
 
 
 class Driver(object):

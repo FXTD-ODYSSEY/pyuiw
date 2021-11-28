@@ -25,14 +25,14 @@ import os
 import sys
 
 # Import third-party modules
-from pyside2uic.Compiler import qtproxies
-from pyside2uic.Compiler.indenter import createCodeIndenter
-from pyside2uic.Compiler.indenter import getIndenter
-from pyside2uic.Compiler.indenter import write_code
-from pyside2uic.Compiler.misc import write_import
-from pyside2uic.Compiler.qobjectcreator import CompilerCreatorPolicy
-from pyside2uic.properties import Properties
-from pyside2uic.uiparser import UIParser
+from pyuiw.uic.Compiler import qtproxies
+from pyuiw.uic.Compiler.indenter import createCodeIndenter
+from pyuiw.uic.Compiler.indenter import getIndenter
+from pyuiw.uic.Compiler.indenter import write_code
+from pyuiw.uic.Compiler.misc import write_import
+from pyuiw.uic.Compiler.qobjectcreator import CompilerCreatorPolicy
+from pyuiw.uic.properties import Properties
+from pyuiw.uic.uiparser import UIParser
 
 
 class UICompiler(UIParser):

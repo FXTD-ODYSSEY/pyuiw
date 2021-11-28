@@ -26,19 +26,19 @@ import os
 import sys
 
 # Import third-party modules
-from pyside2uic.Compiler.indenter import write_code
-from pyside2uic.Compiler.misc import Literal
-from pyside2uic.Compiler.misc import moduleMember
+from pyuiw.uic.Compiler.indenter import write_code
+from pyuiw.uic.Compiler.misc import Literal
+from pyuiw.uic.Compiler.misc import moduleMember
 
 
 if sys.hexversion >= 0x03000000:
     # Import third-party modules
-    from pyside2uic.port_v3.as_string import as_string
-    from pyside2uic.port_v3.proxy_base import ProxyBase
+    from pyuiw.uic.port_v3.as_string import as_string
+    from pyuiw.uic.port_v3.proxy_base import ProxyBase
 else:
     # Import third-party modules
-    from pyside2uic.port_v2.as_string import as_string
-    from pyside2uic.port_v2.proxy_base import ProxyBase
+    from pyuiw.uic.port_v2.as_string import as_string
+    from pyuiw.uic.port_v2.proxy_base import ProxyBase
 
 i18n_strings = []
 i18n_context = ""

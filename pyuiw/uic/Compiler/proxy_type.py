@@ -21,8 +21,8 @@
 # 02110-1301 USA
 
 # Import third-party modules
-from pyside2uic.Compiler.misc import Literal
-from pyside2uic.Compiler.misc import moduleMember
+from pyuiw.uic.Compiler.misc import Literal
+from pyuiw.uic.Compiler.misc import moduleMember
 
 
 class ProxyType(type):
@@ -45,7 +45,7 @@ class ProxyType(type):
 
             # Avoid a circular import.
             # Import third-party modules
-            from pyside2uic.Compiler.qtproxies import LiteralProxyClass
+            from pyuiw.uic.Compiler.qtproxies import LiteralProxyClass
 
             return type(
                 name,

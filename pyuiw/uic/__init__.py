@@ -25,8 +25,8 @@ __all__ = ("compileUi", "compileUiDir", "widgetPluginPath")
 __version__ = ""
 
 # Import third-party modules
-from pyside2uic.Compiler import compiler
-from pyside2uic.Compiler import indenter
+from pyuiw.uic.Compiler import compiler
+from pyuiw.uic.Compiler import indenter
 
 
 _header = """# -*- coding: utf-8 -*-
@@ -154,4 +154,4 @@ def compileUi(uifile, pyfile, execute=False, indent=4, from_imports=False):
 
 # Import third-party modules
 # The list of directories that are searched for widget plugins.
-from pyside2uic.objcreator import widgetPluginPath
+from pyuiw.uic.objcreator import widgetPluginPath

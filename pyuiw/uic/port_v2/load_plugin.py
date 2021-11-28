@@ -21,7 +21,7 @@
 # 02110-1301 USA
 
 # Import third-party modules
-from pyside2uic.exceptions import WidgetPluginError
+from pyuiw.uic.exceptions import WidgetPluginError
 
 
 def load_plugin(plugin, plugin_globals, plugin_locals):

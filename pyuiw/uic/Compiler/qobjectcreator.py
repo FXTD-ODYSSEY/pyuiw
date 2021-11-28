@@ -31,11 +31,11 @@ except NameError:
     from sets import Set as set
 
 # Import third-party modules
-from pyside2uic.Compiler.indenter import write_code
-from pyside2uic.Compiler.qtproxies import Literal
-from pyside2uic.Compiler.qtproxies import QtGui
-from pyside2uic.Compiler.qtproxies import QtWidgets
-from pyside2uic.Compiler.qtproxies import strict_getattr
+from pyuiw.uic.Compiler.indenter import write_code
+from pyuiw.uic.Compiler.qtproxies import Literal
+from pyuiw.uic.Compiler.qtproxies import QtGui
+from pyuiw.uic.Compiler.qtproxies import QtWidgets
+from pyuiw.uic.Compiler.qtproxies import strict_getattr
 
 
 logger = logging.getLogger(__name__)

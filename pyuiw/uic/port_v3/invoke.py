@@ -21,7 +21,7 @@
 # 02110-1301 USA
 
 # Import third-party modules
-from pyside2uic.exceptions import NoSuchWidgetError
+from pyuiw.uic.exceptions import NoSuchWidgetError
 
 
 def invoke(driver):

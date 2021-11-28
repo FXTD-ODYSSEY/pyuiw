@@ -25,16 +25,16 @@ import os.path
 import sys
 
 # Import third-party modules
-from pyside2uic.exceptions import NoSuchWidgetError
-from pyside2uic.exceptions import WidgetPluginError
+from pyuiw.uic.exceptions import NoSuchWidgetError
+from pyuiw.uic.exceptions import WidgetPluginError
 
 
 if sys.hexversion >= 0x03000000:
     # Import third-party modules
-    from pyside2uic.port_v3.load_plugin import load_plugin
+    from pyuiw.uic.port_v3.load_plugin import load_plugin
 else:
     # Import third-party modules
-    from pyside2uic.port_v2.load_plugin import load_plugin
+    from pyuiw.uic.port_v2.load_plugin import load_plugin
 
 
 # The list of directories that are searched for widget plugins.  This is
