@@ -60,7 +60,7 @@ Version = "Qt User Interface Compiler version %s, running on %s %s." % (
 
 class CliBase(object):
     def __init__(self):
-        self.output = ""
+        self.default_exp = "<${py_dir}/${py_name}_ui.py>"
         self.parser = argparse.ArgumentParser(
             prog="pyuiw",
             formatter_class=argparse.RawTextHelpFormatter,
@@ -82,33 +82,63 @@ class CliBase(object):
         return exp
 
     def parse_config(self):
-        watch_list = []
-        exclude_list = []
+
         config = getattr(self.opts, "config", "./pyproject.toml")
         config = Path(config)
-        if config.is_file():
-            with open(config, "r") as f:
-                config = toml.load(f)
-            tool = config.get("tool", {})
-            pyuiw = tool.get("pyuiw", {})
-            watch_list = pyuiw.get("watch", [])
-            exclude_list = pyuiw.get("exclude", [])
+        if not config.is_file():
+            return [], []
+
+        watch_list = []
+        exclude_list = []
+        with open(config, "r") as f:
+            config = toml.load(f)
+        tool = config.get("tool", {})
+        pyuiw = tool.get("pyuiw", {})
+
+        watch_list = pyuiw.get("watch", [])
+        exclude_list = pyuiw.get("exclude", [])
+
+        os.environ["pyuiw_isUseQt"] = pyuiw.get("isUseQt", "true")
+        os.environ["pyuiw_QtModule"] = pyuiw.get("QtModule", "Qt")
+
+        output = pyuiw.get("output", self.default_exp)
+        if output != self.default_exp == self.opts.output:
+            self.opts.output = output
+
+        indent = pyuiw.get("indent", 4)
+        if indent != 4 == self.opts.indent:
+            self.opts.indent = indent
+
+        execute = pyuiw.get("execute", True)
+        if execute != True == self.opts.execute:
+            self.opts.execute = execute
+
+        debug = pyuiw.get("debug", False)
+        if debug != False == self.opts.debug:
+            self.opts.debug = debug
+
+        preview = pyuiw.get("preview", False)
+        if preview != False == self.opts.preview:
+            self.opts.preview = preview
+
+        from_imports = pyuiw.get("from_imports", False)
+        if from_imports != False == self.opts.from_imports:
+            self.opts.from_imports = from_imports
 
         return watch_list, exclude_list
 
     def parse(self):
         self.opts, args = self.parser.parse_known_args()
-        self.output = self.opts.output
+
+        watch_list, exclude_list = self.parse_config()
+        watch_list = getattr(self.opts, "watch", watch_list)
+        exclude_list = getattr(self.opts, "exclude", exclude_list)
 
         # NOTES: add environment variable
         if hasattr(self.opts, "useQt"):
             os.environ["pyuiw_isUseQt"] = self.opts.useQt
         if hasattr(self.opts, "QtModule"):
             os.environ["pyuiw_QtModule"] = self.opts.QtModule
-
-        watch_list, exclude_list = self.parse_config()
-        watch_list = getattr(self.opts, "watch", watch_list)
-        exclude_list = getattr(self.opts, "exclude", exclude_list)
 
         ui_file = args[0] if args else ""
         if ui_file or not watch_list or not self.is_exp(self.opts.output):
@@ -133,8 +163,9 @@ class CliBase(object):
                         if f.endswith(".ui"):
                             paths.append(str(root / f))
 
-        # paths += [r"F:\repo\pyuiw\tests\ui\svnfixer2.ui"]
-        print("watch ui files:\n" + "\n".join(paths))
+        print("watch ui files:")
+        print("\n".join(paths))
+        print(f"\n{'=' * 40}\n")
         for ui_file in paths:
             self.parse_single_ui(ui_file)
             watcher.addPath(str(ui_file))
@@ -162,7 +193,7 @@ class CliBase(object):
         subprocess.call([sys.executable, "-m", "black", opts.output])
         subprocess.Popen([sys.executable, "-m", "isort", opts.output])
 
-        print("output: ", opts.output)
+        # print("output: ", opts.output)
 
 
 class PyUIWatcherCli(CliBase):
@@ -176,19 +207,18 @@ class PyUIWatcherCli(CliBase):
             default=False,
             help="show a preview of the UI instead of generating code",
         )
-        default_exp = "<${py_dir}/${py_name}_ui.py>"
         self.parser.add_argument(
             "-o",
             "--output",
             dest="output",
             action="store",
             type=str,
-            default=default_exp,
+            default=self.default_exp,
             metavar="FILE",
             help="\n".join(
                 [
                     "write generated code to FILE instead of stdout",
-                    f"<EXP> to define a output expression (default: {default_exp})",
+                    f"<EXP> to define a output expression (default: {self.default_exp})",
                     r"${py_dir} - input python directory path",
                     r"${py_name} - input python file name",
                 ]
