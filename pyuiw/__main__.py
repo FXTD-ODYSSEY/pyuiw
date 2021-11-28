@@ -13,6 +13,7 @@ from __future__ import print_function
 # Import built-in modules
 import argparse
 import copy
+import fnmatch
 from functools import partial
 from io import open
 import os
@@ -150,10 +151,9 @@ class CliBase(object):
         app = QtWidgets.QApplication(sys.argv)
         watcher = QtCore.QFileSystemWatcher()
 
-        # TODO(timmyliang) exclude_list usage
         paths = []
         for path in watch_list:
-            path = Path(path)
+            path = Path(path.strip())
             if path.is_file():
                 paths.append(str(path))
             elif path.is_dir():
@@ -163,9 +163,19 @@ class CliBase(object):
                         if f.endswith(".ui"):
                             paths.append(str(root / f))
 
+        # NOTES filter path
+        for exclude in exclude_list:
+            for f in fnmatch.filter(paths, exclude):
+                paths.remove(f)
+
+        if not paths:
+            sys.stderr.write("Error: no find any ui file in watch path\n")
+            sys.exit(0)
+
         print("watch ui files:")
         print("\n".join(paths))
         print(f"\n{'=' * 40}\n")
+
         for ui_file in paths:
             self.parse_single_ui(ui_file)
             watcher.addPath(str(ui_file))
