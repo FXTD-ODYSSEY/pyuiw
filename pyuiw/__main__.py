@@ -99,7 +99,7 @@ class CliBase(object):
         watch_list = pyuiw.get("watch", [])
         exclude_list = pyuiw.get("exclude", [])
 
-        os.environ["pyuiw_isUseQt"] = pyuiw.get("isUseQt", "true")
+        os.environ["pyuiw_isUseQt"] = str(pyuiw.get("useQt", True)).lower()
         os.environ["pyuiw_QtModule"] = pyuiw.get("QtModule", "Qt")
 
         output = pyuiw.get("output", self.default_exp)
@@ -160,6 +160,7 @@ class CliBase(object):
         watcher = QtCore.QFileSystemWatcher()
 
         paths = []
+        print(watch_list)
         for path in watch_list:
             path = Path(path.strip())
             if path.is_file():
@@ -211,9 +212,9 @@ class CliBase(object):
         if opts.black:
             subprocess.call([sys.executable, "-m", "black", opts.output])
         if opts.isort:
-            subprocess.Popen([sys.executable, "-m", "isort", opts.output])
+            isort.file(opts.output)
 
-        # print("output: ", opts.output)
+        print("[pyuiw] output: ", opts.output)
 
 
 class PyUIWatcherCli(CliBase):
@@ -275,7 +276,7 @@ class PyUIWatcherCli(CliBase):
         g.add_argument(
             "--from-imports",
             dest="from_imports",
-            action="store_false",
+            action="store_true",
             default=False,
             help="generate imports relative to '.'",
         )
@@ -296,16 +297,18 @@ class PyUIWatcherCli(CliBase):
             help="customize import Qt module name | only work in --useQt false",
         )
         g.add_argument(
-            "--black",
+            "-nb",
+            "--no-black",
             dest="black",
-            action="store_true",
+            action="store_false",
             default=True,
             help="using black format code",
         )
         g.add_argument(
-            "--isort",
+            "-ni",
+            "--no-isort",
             dest="isort",
-            action="store_true",
+            action="store_false",
             default=True,
             help="using isort format code",
         )
@@ -316,21 +319,19 @@ class PyUIWatcherCli(CliBase):
             "-w",
             "--watch",
             dest="watch",
-            action="extend",
+            nargs="+",
             type=str,
             default=argparse.SUPPRESS,
-            nargs="*",
             help="watch files or directories",
         )
         g.add_argument(
             "-e",
             "--exclude",
             dest="exclude",
-            action="extend",
+            nargs="+",
             type=str,
             default=argparse.SUPPRESS,
-            nargs="*",
-            help="exclude files re expression",
+            help="exclude files glob expression",
         )
         g.add_argument(
             "-c",
