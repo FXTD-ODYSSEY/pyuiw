@@ -54,6 +54,6 @@ def test_no_black(runner, get_ui):
 
 def test_output(runner, get_ui):
     ui_file, py_file = get_ui("custom", "custom.py")
-    args = ["-o=<${py_dir}/${py_name}.py>", ui_file]
+    args = ["-o=<${ui_dir}/${ui_name}.py>", ui_file]
     runner(args)
     assert py_file.is_file()
