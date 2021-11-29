@@ -5,7 +5,7 @@ license = "MIT"
 name = "pyuiw"
 readme = "README.md"
 repository = "https://github.com/FXTD-ODYSSEY/pyuiw"
-version = "0.2.0"
+version = "0.2.1"
 
 [tool.poetry.dependencies]
 PySide2 = "^5.15.2"
@@ -23,6 +23,7 @@ pre-commit = "^2.15.0"
 pylint = "^2.12.1"
 pytest = "^6.2.5"
 pytest-qt = "^4.0.2"
+toml = "^0.10.2"
 
 [tool.poetry.scripts]
 pyuiw = 'pyuiw.__main__:PyUIWatcherCli'
@@ -117,8 +118,3 @@ commands = python scripts/deploy.py
 
 [tool.flake8]
 max-line-length = 88
-
-[tool.pyuiw]
-exclude = ["*launcher*"]
-black = false
-watch = [" ./tests/ui"]

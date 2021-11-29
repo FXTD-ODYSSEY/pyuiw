@@ -130,3 +130,5 @@ dmypy.json
 
 
 scripts/deploy.json
+tests/ui/*.py
+.vscode/
