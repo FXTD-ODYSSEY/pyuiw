@@ -21,22 +21,27 @@
 # 02110-1301 USA
 
 
+# Import future modules
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 # Import built-in modules
 import os
 import sys
 
-# Import third-party modules
+# Import local modules
 from pyuiw.uic.Compiler.indenter import write_code
 from pyuiw.uic.Compiler.misc import Literal
 from pyuiw.uic.Compiler.misc import moduleMember
 
 
 if sys.hexversion >= 0x03000000:
-    # Import third-party modules
+    # Import local modules
     from pyuiw.uic.port_v3.as_string import as_string
     from pyuiw.uic.port_v3.proxy_base import ProxyBase
 else:
-    # Import third-party modules
+    # Import local modules
     from pyuiw.uic.port_v2.as_string import as_string
     from pyuiw.uic.port_v2.proxy_base import ProxyBase
 
@@ -147,20 +152,24 @@ class ProxyClass(ProxyBase):
         else:
             self._uic_name = "Unnamed"
 
-        if not noInstantiation:
-            is_layout = issubclass(self.__class__, QtWidgets.QLayout)
-            has_dot = str(self.__class__).count(".")
-            is_one = len(args) == 1
-            condition = is_layout and has_dot or not is_one
-            funcall = "%s(%s)" % (
-                moduleMember(self.module, self.__class__.__name__),
-                ", ".join(map(str, args)) if condition else "parent=%s" % args[0],
-            )
+        if noInstantiation:
+            return
 
-            if objectname:
-                funcall = "%s = %s" % (objectname, funcall)
+        is_layout = issubclass(self.__class__, QtWidgets.QLayout)
+        is_window = issubclass(self.__class__, QtWidgets.QMainWindow)
+        has_dot = str(self.__class__).count(".")
+        is_one = len(args) == 1
 
-            write_code(funcall)
+        condition = is_layout and has_dot or not is_one
+        call_args = ", ".join(map(str, args)) if condition else f"parent={args[0]}"
+        call_args = "" if is_window else call_args
+        widget_name = moduleMember(self.module, self.__class__.__name__)
+        funcall = f"{widget_name}({call_args})"
+
+        if objectname:
+            funcall = "%s = %s" % (objectname, funcall)
+
+        write_code(funcall)
 
     def __str__(self):
         return self._uic_name
