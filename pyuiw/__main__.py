@@ -61,7 +61,7 @@ Version = "Qt User Interface Compiler version %s, running on %s %s." % (
 
 class CliBase(object):
     def __init__(self):
-        self.default_exp = "<${py_dir}/${py_name}_ui.py>"
+        self.default_exp = "<${ui_dir}/${ui_name}_ui.py>"
         self.parser = argparse.ArgumentParser(
             prog="pyuiw",
             formatter_class=argparse.RawTextHelpFormatter,
@@ -77,7 +77,7 @@ class CliBase(object):
         if is_exp:
             template = Template(exp[1:-1])
             exp = template.substitute(
-                {"py_name": ui_file.stem, "py_dir": ui_file.parent}
+                {"ui_name": ui_file.stem, "ui_dir": ui_file.parent}
             )
             exp = os.path.abspath(exp)
         return exp
@@ -160,7 +160,6 @@ class CliBase(object):
         watcher = QtCore.QFileSystemWatcher()
 
         paths = []
-        print(watch_list)
         for path in watch_list:
             path = Path(path.strip())
             if path.is_file():
@@ -206,13 +205,13 @@ class CliBase(object):
         opts.output = self.parse_exp(self.opts.output, ui_file)
         ui_file = str(ui_file.absolute())
 
-        # FIXME: some ui file output empty in watch mode
         invoke(Driver(opts, ui_file))
 
         if opts.black:
             subprocess.call([sys.executable, "-m", "black", opts.output])
         if opts.isort:
-            isort.file(opts.output)
+            subprocess.Popen([sys.executable, "-m", "isort", opts.output])
+            # isort.file(opts.output)
 
         print("[pyuiw] output: ", opts.output)
 
@@ -240,8 +239,8 @@ class PyUIWatcherCli(CliBase):
                 [
                     "write generated code to FILE instead of stdout",
                     f"<EXP> to define a output expression (default: {self.default_exp})",
-                    r"${py_dir} - input python directory path",
-                    r"${py_name} - input python file name",
+                    r"${ui_dir} - input python directory path",
+                    r"${ui_name} - input python file name",
                 ]
             ),
         )
@@ -281,11 +280,12 @@ class PyUIWatcherCli(CliBase):
             help="generate imports relative to '.'",
         )
         g.add_argument(
-            "--useQt",
+            "-nq",
+            "--no-useQt",
             dest="useQt",
-            action="store_true",
+            action="store_false",
             default=argparse.SUPPRESS,
-            help="using Qt.py module for Qt compat",
+            help="ignore Qt.py module for Qt compat",
         )
         g.add_argument(
             "--QtModule",
@@ -294,7 +294,7 @@ class PyUIWatcherCli(CliBase):
             type=str,
             default=argparse.SUPPRESS,
             metavar="module",
-            help="customize import Qt module name | only work in --useQt false",
+            help="customize import Qt module name (default: Qt) | only work in --no-useQt flag set",
         )
         g.add_argument(
             "-nb",
@@ -302,7 +302,7 @@ class PyUIWatcherCli(CliBase):
             dest="black",
             action="store_false",
             default=True,
-            help="using black format code",
+            help="ignore black format code",
         )
         g.add_argument(
             "-ni",
@@ -310,7 +310,7 @@ class PyUIWatcherCli(CliBase):
             dest="isort",
             action="store_false",
             default=True,
-            help="using isort format code",
+            help="ignore isort format code",
         )
         self.parser.add_argument_group(g)
 
