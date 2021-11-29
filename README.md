@@ -105,3 +105,5 @@ watch = ["./tests/ui","./test2/test.ui"] # read the file or directory get all th
 - [x] poetry pypi python package
 - [x] poetry command line tool
 - [x] add pytest
+- [ ] ts file
+- [ ] shield.io icon

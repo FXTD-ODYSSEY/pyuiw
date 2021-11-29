@@ -5,7 +5,7 @@ license = "MIT"
 name = "pyuiw"
 readme = "README.md"
 repository = "https://github.com/FXTD-ODYSSEY/pyuiw"
-version = "0.2.2"
+version = "0.2.3"
 
 [tool.poetry.dependencies]
 PySide2 = "^5.15.2"
@@ -109,6 +109,10 @@ commands =
     pip uninstall -y pyuiw
     pip install dist/pyuiw-0.2.2-py3-none-any.whl
     pyuiw -w f:/repo/pyuiw/tests/ui/basic.ui
+
+[testenv:run]
+deps = -rrequirements.txt
+commands = scripts/run.bat
 
 [testenv:deploy]
 deps = poetry

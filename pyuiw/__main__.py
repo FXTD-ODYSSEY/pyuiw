@@ -61,6 +61,7 @@ Version = "Qt User Interface Compiler version %s, running on %s %s." % (
 
 class CliBase(object):
     def __init__(self):
+        self.default_ts_exp = "<${ui_dir}/${ui_name}.ts>"
         self.default_exp = "<${ui_dir}/${ui_name}_ui.py>"
         self.parser = argparse.ArgumentParser(
             prog="pyuiw",
@@ -134,6 +135,10 @@ class CliBase(object):
         if isort != True == self.opts.isort:
             self.opts.isort = isort
 
+        ts = pyuiw.get("ts", self.default_ts_exp)
+        if hasattr(self.opts, "ts") and ts != self.default_ts_exp == self.opts.ts:
+            self.opts.ts = ts
+
         return watch_list, exclude_list
 
     def parse(self):
@@ -148,6 +153,8 @@ class CliBase(object):
             os.environ["pyuiw_isUseQt"] = self.opts.useQt
         if hasattr(self.opts, "QtModule"):
             os.environ["pyuiw_QtModule"] = self.opts.QtModule
+        if not hasattr(self.opts, "ts"):
+            self.opts.ts = self.default_ts_exp
 
         ui_file = args[0] if args else ""
         if ui_file or not watch_list or not self.is_exp(self.opts.output):
@@ -311,6 +318,15 @@ class PyUIWatcherCli(CliBase):
             action="store_false",
             default=True,
             help="ignore isort format code",
+        )
+        g.add_argument(
+            "-ts",
+            "--gen-ts",
+            dest="ts",
+            action="store",
+            type=str,
+            default=argparse.SUPPRESS,
+            help="generate ts file for i18n",
         )
         self.parser.add_argument_group(g)
 

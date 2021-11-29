@@ -1,0 +1,5 @@
+Qt.py
+PySide2
+toml
+black
+isort
