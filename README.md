@@ -21,6 +21,8 @@ pyuiw
 
 two command run the same alternatively.
 
+![demo](./images/demo.gif)
+
 ```
 pyuiw -h
 ```
@@ -28,8 +30,8 @@ pyuiw -h
 run this command can show up the help documentation.
 
 ```
-usage: pyuiw [-h] [-p] [-o FILE] [-x] [-d] [-i N] [--from-imports] [--useQt] [--QtModule module] [--black] [--isort] [-w [WATCH [WATCH ...]]] [-e [EXCLUDE [EXCLUDE ...]]]
-             [-c FILE]
+usage: pyuiw [-h] [-p] [-o FILE] [-x] [-d] [-i N] [--from-imports] [-nq] [--QtModule module] [-nb] [-ni]
+             [-w WATCH [WATCH ...]] [-e EXCLUDE [EXCLUDE ...]] [-c FILE]
 
 Qt User Interface Compiler version , running on PySide2 5.15.2.
 Command Line Watcher for auto compile Qt ui to python file.
@@ -41,25 +43,25 @@ optional arguments:
   -p, --preview         show a preview of the UI instead of generating code
   -o FILE, --output FILE
                         write generated code to FILE instead of stdout
-                        <EXP> to define a output expression (default: <${py_dir}/${py_name}_ui.py>)
-                        ${py_dir} - input python directory path
-                        ${py_name} - input python file name
+                        <EXP> to define a output expression (default: <${ui_dir}/${ui_name}_ui.py>)
+                        ${ui_dir} - input python directory path
+                        ${ui_name} - input python file name
   -x, --execute         generate extra code to test and display the class
   -d, --debug           show debug output
   -i N, --indent N      set indent width to N spaces, tab if N is 0 (default: 4)
 
 Code generation options:
   --from-imports        generate imports relative to '.'
-  --useQt               using Qt.py module for Qt compat
-  --QtModule module     customize import Qt module name | only work in --useQt false
-  --black               using black format code
-  --isort               using isort format code
+  -nq, --no-useQt       ignore Qt.py module for Qt compat
+  --QtModule module     customize import Qt module name (default: Qt) | only work in --no-useQt flag set
+  -nb, --no-black       ignore black format code
+  -ni, --no-isort       ignore isort format code
 
 Watcher options:
-  -w [WATCH [WATCH ...]], --watch [WATCH [WATCH ...]]
+  -w WATCH [WATCH ...], --watch WATCH [WATCH ...]
                         watch files or directories
-  -e [EXCLUDE [EXCLUDE ...]], --exclude [EXCLUDE [EXCLUDE ...]]
-                        exclude files re expression
+  -e EXCLUDE [EXCLUDE ...], --exclude EXCLUDE [EXCLUDE ...]
+                        exclude files glob expression
   -c FILE, --config FILE
                         read specific config file
 
@@ -81,7 +83,7 @@ debug = false
 from_imports = false
 preview = false
 indent = 4
-output = <${py_dir}/${py_name}_ui.py>
+output = "<${ui_dir}/${ui_name}_ui.py>"
 black = true
 isort = true
 ```
@@ -90,7 +92,7 @@ here is a example setup.
 
 ```toml
 [tool.pyuiw]
-exclude = ["*launcher*"] # exclude file container `launcher`
+exclude = ["*launcher*"] # exclude file contain `launcher`
 watch = ["./tests/ui","./test2/test.ui"] # read the file or directory get all the `.ui` file for watch
 ```
 
@@ -102,4 +104,4 @@ watch = ["./tests/ui","./test2/test.ui"] # read the file or directory get all th
 - [x] customize import
 - [x] poetry pypi python package
 - [x] poetry command line tool
-- [ ] unittest
+- [x] add pytest

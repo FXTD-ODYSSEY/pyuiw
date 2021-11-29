@@ -5,7 +5,7 @@ license = "MIT"
 name = "pyuiw"
 readme = "README.md"
 repository = "https://github.com/FXTD-ODYSSEY/pyuiw"
-version = "0.2.1"
+version = "0.2.2"
 
 [tool.poetry.dependencies]
 PySide2 = "^5.15.2"
@@ -107,9 +107,8 @@ deps = poetry
 commands =
     poetry build
     pip uninstall -y pyuiw
-    pip install dist/pyuiw-0.1.0-py3-none-any.whl
-    pyuiw -o ./tests/ui/svnfixer1.py ./tests/ui/svnfixer.ui
-    python -m pyuiw -o ./tests/ui/svnfixer2.py ./tests/ui/svnfixer.ui
+    pip install dist/pyuiw-0.2.2-py3-none-any.whl
+    pyuiw -w f:/repo/pyuiw/tests/ui/basic.ui
 
 [testenv:deploy]
 deps = poetry
