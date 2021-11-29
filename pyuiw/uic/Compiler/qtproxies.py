@@ -28,6 +28,7 @@ from __future__ import print_function
 
 # Import built-in modules
 import os
+import re
 import sys
 
 # Import local modules
@@ -247,8 +248,12 @@ class QtCore(ProxyNamespace):
             if slot_name.endswith(".raise"):
                 args = list(args[:-1])
                 args.append(Literal(slot_name + "_"))
-
-            ProxyClassMember(cls, "connect", 0)(*args)
+            sender = args[0]
+            signal = args[1]
+            slot = args[2]
+            match = re.match(r"^(\D+?)[^a-zA-Z]", signal)
+            signal = match.group(1) if match else signal
+            ProxyClassMember("%s.%s" % (sender, signal), "connect", 0)(slot)
 
         connect = classmethod(connect)
 

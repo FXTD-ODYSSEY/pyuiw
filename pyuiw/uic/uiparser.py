@@ -20,11 +20,21 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 # 02110-1301 USA
 
+# Import future modules
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 # Import built-in modules
 import logging
 import os.path
 import re
 import sys
+
+# Import local modules
+from pyuiw.uic.exceptions import NoSuchWidgetError
+from pyuiw.uic.objcreator import QObjectCreator
+from pyuiw.uic.properties import Properties
 
 
 try:
@@ -32,12 +42,9 @@ try:
     from xml.etree.cElementTree import SubElement
     from xml.etree.cElementTree import parse
 except ImportError:
-    from xml.etree.ElementTree import parse, SubElement
-
-# Import third-party modules
-from pyuiw.uic.exceptions import NoSuchWidgetError
-from pyuiw.uic.objcreator import QObjectCreator
-from pyuiw.uic.properties import Properties
+    # Import built-in modules
+    from xml.etree.ElementTree import SubElement
+    from xml.etree.ElementTree import parse
 
 
 logger = logging.getLogger(__name__)
@@ -838,7 +845,7 @@ class UIParser(object):
         for conn in iter(elem):
             QtCore.QObject.connect(
                 name2object(conn.findtext("sender")),
-                QtCore.SIGNAL(conn.findtext("signal")),
+                conn.findtext("signal"),
                 self.factory.getSlot(
                     name2object(conn.findtext("receiver")),
                     conn.findtext("slot").split("(")[0],
