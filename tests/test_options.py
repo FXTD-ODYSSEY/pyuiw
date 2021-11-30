@@ -9,6 +9,7 @@ from __future__ import division
 from __future__ import print_function
 
 # Import built-in modules
+from pathlib import Path
 import subprocess
 import sys
 
@@ -57,3 +58,12 @@ def test_output(runner, get_ui):
     args = ["-o=<${ui_dir}/${ui_name}.py>", ui_file]
     runner(args)
     assert py_file.is_file()
+
+
+def test_ts(runner, get_ui):
+    ui_file, py_file = get_ui("custom", "custom.py")
+    ts_file = Path(str(py_file.parent / py_file.stem) + ".ts")
+    args = ["-o=<${ui_dir}/${ui_name}.py>", "-ts=<${ui_dir}/${ui_name}.ts>", ui_file]
+    runner(args)
+    assert py_file.is_file()
+    assert ts_file.is_file()
