@@ -22,8 +22,92 @@
 # 02110-1301 USA
 
 
+# Import future modules
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 # Import built-in modules
 import os.path
+
+# Import local modules
+from pyuiw.uic.Compiler.qtproxies import QtWidgets
+
+
+standard_icons = [
+    "SP_ArrowBack",
+    "SP_ArrowDown",
+    "SP_ArrowForward",
+    "SP_ArrowLeft",
+    "SP_ArrowRight",
+    "SP_ArrowUp",
+    "SP_BrowserReload",
+    "SP_BrowserStop",
+    "SP_CommandLink",
+    "SP_ComputerIcon",
+    "SP_CustomBase",
+    "SP_DesktopIcon",
+    "SP_DialogApplyButton",
+    "SP_DialogCancelButton",
+    "SP_DialogCloseButton",
+    "SP_DialogDiscardButton",
+    "SP_DialogHelpButton",
+    "SP_DialogNoButton",
+    "SP_DialogOkButton",
+    "SP_DialogOpenButton",
+    "SP_DialogResetButton",
+    "SP_DialogSaveButton",
+    "SP_DialogYesButton",
+    "SP_DirClosedIcon",
+    "SP_DirHomeIcon",
+    "SP_DirIcon",
+    "SP_DirLinkIcon",
+    "SP_DirLinkOpenIcon",
+    "SP_DirOpenIcon",
+    "SP_DockWidgetCloseButton",
+    "SP_DriveCDIcon",
+    "SP_DriveDVDIcon",
+    "SP_DriveFDIcon",
+    "SP_DriveHDIcon",
+    "SP_DriveNetIcon",
+    "SP_FileDialogBack",
+    "SP_FileDialogContentsView",
+    "SP_FileDialogDetailedView",
+    "SP_FileDialogEnd",
+    "SP_FileDialogInfoView",
+    "SP_FileDialogListView",
+    "SP_FileDialogNewFolder",
+    "SP_FileDialogStart",
+    "SP_FileDialogToParent",
+    "SP_FileIcon",
+    "SP_FileLinkIcon",
+    "SP_LineEditClearButton",
+    "SP_MediaPause",
+    "SP_MediaPlay",
+    "SP_MediaSeekBackward",
+    "SP_MediaSeekForward",
+    "SP_MediaSkipBackward",
+    "SP_MediaSkipForward",
+    "SP_MediaStop",
+    "SP_MediaVolume",
+    "SP_MediaVolumeMuted",
+    "SP_MessageBoxCritical",
+    "SP_MessageBoxInformation",
+    "SP_MessageBoxQuestion",
+    "SP_MessageBoxWarning",
+    "SP_TitleBarCloseButton",
+    "SP_TitleBarContextHelpButton",
+    "SP_TitleBarMaxButton",
+    "SP_TitleBarMenuButton",
+    "SP_TitleBarMinButton",
+    "SP_TitleBarNormalButton",
+    "SP_TitleBarShadeButton",
+    "SP_TitleBarUnshadeButton",
+    "SP_ToolBarHorizontalExtensionButton",
+    "SP_ToolBarVerticalExtensionButton",
+    "SP_TrashIcon",
+    "SP_VistaShield",
+]
 
 
 class IconCache(object):
@@ -46,7 +130,11 @@ class IconCache(object):
 
     def get_icon(self, iconset):
         """Return an icon described by the given iconset tag."""
-
+        icon_name = iconset.attrib.get("theme")
+        if icon_name in standard_icons:
+            return QtWidgets.QApplication.style().standardIcon(
+                getattr(QtWidgets.QStyle, icon_name)
+            )
         iset = _IconSet(iconset, self._base_dir)
 
         try:
