@@ -756,7 +756,6 @@ class UIParser(object):
         self.stack.popWidget()
         self.addActions()
         self.setBuddies()
-        self.setDelayedProps()
 
     def addActions(self):
         for widget, action_name in self.actions:
@@ -852,6 +851,7 @@ class UIParser(object):
                 ),
             )
         QtCore.QMetaObject.connectSlotsByName(self.toplevelWidget)
+        self.setDelayedProps()
 
     def customWidgets(self, elem):
         def header2module(header):
