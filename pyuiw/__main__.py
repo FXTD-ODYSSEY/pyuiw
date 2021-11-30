@@ -61,7 +61,6 @@ Version = "Qt User Interface Compiler version %s, running on %s %s." % (
 
 class CliBase(object):
     def __init__(self):
-        self.default_ts_exp = "<${ui_dir}/${ui_name}.ts>"
         self.default_exp = "<${ui_dir}/${ui_name}_ui.py>"
         self.parser = argparse.ArgumentParser(
             prog="pyuiw",
@@ -103,42 +102,23 @@ class CliBase(object):
         os.environ["pyuiw_isUseQt"] = str(pyuiw.get("useQt", True)).lower()
         os.environ["pyuiw_QtModule"] = pyuiw.get("QtModule", "Qt")
 
-        output = pyuiw.get("output", self.default_exp)
-        if output != self.default_exp == self.opts.output:
-            self.opts.output = output
+        opts = {
+            "output": self.default_exp,
+            "indent": 4,
+            "execute": True,
+            "debug": False,
+            "preview": False,
+            "from_imports": False,
+            "black": True,
+            "isort": True,
+            "ts": "",
+        }
 
-        indent = pyuiw.get("indent", 4)
-        if indent != 4 == self.opts.indent:
-            self.opts.indent = indent
-
-        execute = pyuiw.get("execute", True)
-        if execute != True == self.opts.execute:
-            self.opts.execute = execute
-
-        debug = pyuiw.get("debug", False)
-        if debug != False == self.opts.debug:
-            self.opts.debug = debug
-
-        preview = pyuiw.get("preview", False)
-        if preview != False == self.opts.preview:
-            self.opts.preview = preview
-
-        from_imports = pyuiw.get("from_imports", False)
-        if from_imports != False == self.opts.from_imports:
-            self.opts.from_imports = from_imports
-
-        black = pyuiw.get("black", True)
-        if black != True == self.opts.black:
-            self.opts.black = black
-
-        isort = pyuiw.get("isort", True)
-        if isort != True == self.opts.isort:
-            self.opts.isort = isort
-
-        ts = pyuiw.get("ts", self.default_ts_exp)
-        if hasattr(self.opts, "ts") and ts != self.default_ts_exp == self.opts.ts:
-            self.opts.ts = ts
-
+        for opt, default in opts.items():
+            dst = pyuiw.get(opt, default)
+            src = getattr(self.opts, opt, None)
+            if src is not None and dst != default == src:
+                setattr(self.opts, opt, dst)
         return watch_list, exclude_list
 
     def parse(self):
@@ -217,8 +197,14 @@ class CliBase(object):
         if opts.black:
             subprocess.call([sys.executable, "-m", "black", opts.output])
         if opts.isort:
-            subprocess.Popen([sys.executable, "-m", "isort", opts.output])
+            subprocess.call([sys.executable, "-m", "isort", opts.output])
             # isort.file(opts.output)
+
+        ts = self.parse_exp(self.opts.ts, ui_file)
+        try:
+            subprocess.call(["pyside2-lupdate", opts.output, "-ts", ts])
+        except OSError:
+            print("[pyuiw] error: incorrect `ts` " + ts)
 
         print("[pyuiw] output: ", opts.output)
 
@@ -325,7 +311,7 @@ class PyUIWatcherCli(CliBase):
             dest="ts",
             action="store",
             type=str,
-            default=argparse.SUPPRESS,
+            default="",
             help="generate ts file for i18n",
         )
         self.parser.add_argument_group(g)
