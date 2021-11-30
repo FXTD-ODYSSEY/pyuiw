@@ -1,5 +1,15 @@
 # pyuiw
 
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/FXTD-ODYSSEY/pyuiw/master.svg)](https://results.pre-commit.ci/latest/github/FXTD-ODYSSEY/pyuiw/master)
+[![python version](https://img.shields.io/pypi/pyversions/pyuiw)](https://img.shields.io/pypi/pyversions/pyuiw)
+[![PyPI version](https://img.shields.io/pypi/v/pyuiw?color=green)](https://badge.fury.io/py/pyuiw)
+[![Documentation Status](https://readthedocs.org/projects/pyuiw/badge/?version=master)](https://pyuiw.readthedocs.io/en/master/?badge=master)
+![Downloads Status](https://img.shields.io/pypi/dw/pyuiw)
+![License](https://img.shields.io/pypi/l/pyuiw)
+![pypi format](https://img.shields.io/pypi/format/pyuiw)
+[![Downloads](https://pepy.tech/badge/pyuiw)](https://pepy.tech/badge/pyuiw)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/loonghao/pyuiw/graphs/commit-activity)
+
 Command Line Watcher for auto compile Qt ui to python file.
 
 Original Tool Source from [pyside2-tools](https://github.com/pyside/pyside2-tools) `pyside2uic`
@@ -30,8 +40,7 @@ pyuiw -h
 run this command can show up the help documentation.
 
 ```
-usage: pyuiw [-h] [-p] [-o FILE] [-x] [-d] [-i N] [--from-imports] [-nq] [--QtModule module] [-nb] [-ni]
-             [-w WATCH [WATCH ...]] [-e EXCLUDE [EXCLUDE ...]] [-c FILE]
+usage: pyuiw [-h] [-p] [-o FILE] [-x] [-d] [-i N] [--from-imports] [-nq] [--QtModule module] [-nb] [-ni] [-ts TS] [-w WATCH [WATCH ...]] [-e EXCLUDE [EXCLUDE ...]] [-c FILE]
 
 Qt User Interface Compiler version , running on PySide2 5.15.2.
 Command Line Watcher for auto compile Qt ui to python file.
@@ -56,6 +65,7 @@ Code generation options:
   --QtModule module     customize import Qt module name (default: Qt) | only work in --no-useQt flag set
   -nb, --no-black       ignore black format code
   -ni, --no-isort       ignore isort format code
+  -ts TS, --gen-ts TS   generate ts file for i18n | support <EXP> like --output
 
 Watcher options:
   -w WATCH [WATCH ...], --watch WATCH [WATCH ...]
@@ -64,7 +74,6 @@ Watcher options:
                         exclude files glob expression
   -c FILE, --config FILE
                         read specific config file
-
 ```
 
 ## Configuration
@@ -100,10 +109,16 @@ watch = ["./tests/ui","./test2/test.ui"] # read the file or directory get all th
 
 - [x] import code to the top (implement isort)
 - [x] black format code
-- [x] implement Qt.py for `QApplication.translate`
-- [x] customize import
 - [x] poetry pypi python package
 - [x] poetry command line tool
 - [x] add pytest
-- [ ] ts file
-- [ ] shield.io icon
+- [x] auto create ts file
+- [x] shield.io icon
+- [ ] add sphinx docs
+
+uic enhance
+
+- [x] implement Qt.py for `QApplication.translate`
+- [x] customize import
+- [x] modern signal connections
+- [x] designer theme to standard icon set
