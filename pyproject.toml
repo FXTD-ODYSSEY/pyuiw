@@ -5,7 +5,7 @@ license = "MIT"
 name = "pyuiw"
 readme = "README.md"
 repository = "https://github.com/FXTD-ODYSSEY/pyuiw"
-version = "0.2.3"
+version = "0.2.4"
 
 [tool.poetry.dependencies]
 PySide2 = "^5.15.2"
@@ -95,25 +95,38 @@ skip_glob = "*/docs/conf.py"
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = python2.7,echo
+envlist = python3.7
 isolated_build = True
 skipsdist = true
 
-[testenv]
-deps = pytest >= 3.0.0, <4
+[testenv:test]
+deps =
+    -rrequirements.txt
+    pytest
+setenv =
+    PYTHONPATH = {toxinidir}
 commands = pytest
 
+
 [testenv:install]
-deps = poetry
+deps =
+    poetry
+    toml
 commands =
-    poetry build
-    pip uninstall -y pyuiw
-    pip install dist/pyuiw-0.2.2-py3-none-any.whl
-    pyuiw -w f:/repo/pyuiw/tests/ui/basic.ui
+    python scripts/install.py
+
 
 [testenv:run]
 deps = -rrequirements.txt
-commands = scripts/run.bat
+setenv =
+    PYTHONPATH = {toxinidir}
+commands = python pyuiw/__main__.py tests/ui/custom.ui
+
+[testenv:help]
+deps = -rrequirements.txt
+setenv =
+    PYTHONPATH = {toxinidir}
+commands = python pyuiw/__main__.py -h
 
 [testenv:deploy]
 deps = poetry
