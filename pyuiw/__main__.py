@@ -263,7 +263,7 @@ class PyUIWatcherCli(CliBase):
             "-d",
             "--debug",
             dest="debug",
-            action="store_false",
+            action="store_true",
             default=False,
             help="show debug output",
         )
