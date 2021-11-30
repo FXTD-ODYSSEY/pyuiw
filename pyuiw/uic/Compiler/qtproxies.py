@@ -157,11 +157,12 @@ class ProxyClass(ProxyBase):
             return
 
         is_layout = issubclass(self.__class__, QtWidgets.QLayout)
+        is_action = issubclass(self.__class__, QtWidgets.QAction)
         is_window = issubclass(self.__class__, QtWidgets.QMainWindow)
         has_dot = str(self.__class__).count(".")
         is_one = len(args) == 1
 
-        condition = is_layout and has_dot or not is_one
+        condition = is_action or is_layout or has_dot or not is_one
         call_args = ", ".join(map(str, args)) if condition else f"parent={args[0]}"
         call_args = "" if is_window else call_args
         widget_name = moduleMember(self.module, self.__class__.__name__)
