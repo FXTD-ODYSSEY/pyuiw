@@ -202,7 +202,8 @@ class CliBase(object):
 
         ts = self.parse_exp(self.opts.ts, ui_file)
         try:
-            subprocess.call(["pyside2-lupdate", opts.output, "-ts", ts])
+            if Path(ts).touch():
+                subprocess.call(["pyside2-lupdate", opts.output, "-ts", ts])
         except OSError:
             print("[pyuiw] error: incorrect `ts` " + ts)
 
@@ -312,7 +313,7 @@ class PyUIWatcherCli(CliBase):
             action="store",
             type=str,
             default="",
-            help="generate ts file for i18n",
+            help="generate ts file for i18n | support <EXP> like --output",
         )
         self.parser.add_argument_group(g)
 
