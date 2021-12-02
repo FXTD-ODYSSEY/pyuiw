@@ -5,7 +5,7 @@ license = "MIT"
 name = "pyuiw"
 readme = "README.md"
 repository = "https://github.com/FXTD-ODYSSEY/pyuiw"
-version = "0.2.4"
+version = "0.10.0"
 
 [tool.poetry.dependencies]
 PySide2 = "^5.15.2"
@@ -35,10 +35,11 @@ requires = ["poetry-core>=1.0.0"]
 [tool.commitizen]
 name = "cz_conventional_commits"
 tag_format = "v$version"
-version = "0.16.0"
+version = "0.3.0"
+update_changelog_on_bump = true
 version_files = [
   "pyproject.toml:version",
-  "src/photoshop/__version__.py",
+  "pyuiw/__version__.py",
 ]
 
 [tool.black]
