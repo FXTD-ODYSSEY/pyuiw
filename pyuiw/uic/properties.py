@@ -20,21 +20,26 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 # 02110-1301 USA
 
+# Import future modules
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 # Import built-in modules
 import logging
 import os.path
 import sys
 
-# Import third-party modules
+# Import local modules
 from pyuiw.uic.exceptions import UnsupportedPropertyError
 from pyuiw.uic.icon_cache import IconCache
 
 
 if sys.hexversion >= 0x03000000:
-    # Import third-party modules
+    # Import local modules
     from pyuiw.uic.port_v3.ascii_upper import ascii_upper
 else:
-    # Import third-party modules
+    # Import local modules
     from pyuiw.uic.port_v2.ascii_upper import ascii_upper
 
 logger = logging.getLogger(__name__)
