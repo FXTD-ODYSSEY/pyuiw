@@ -27,7 +27,6 @@ import sys
 import Qt
 from Qt import QtCore
 from Qt import QtWidgets
-import isort
 import toml
 
 # Import local modules
@@ -99,9 +98,6 @@ class CliBase(object):
         watch_list = pyuiw.get("watch", [])
         exclude_list = pyuiw.get("exclude", [])
 
-        os.environ["pyuiw_isUseQt"] = str(pyuiw.get("useQt", True)).lower()
-        os.environ["pyuiw_QtModule"] = pyuiw.get("QtModule", "Qt")
-
         opts = {
             "output": self.default_exp,
             "indent": 4,
@@ -128,11 +124,6 @@ class CliBase(object):
         watch_list = getattr(self.opts, "watch", watch_list)
         exclude_list = getattr(self.opts, "exclude", exclude_list)
 
-        # NOTES: add environment variable
-        if hasattr(self.opts, "useQt"):
-            os.environ["pyuiw_isUseQt"] = self.opts.useQt
-        if hasattr(self.opts, "QtModule"):
-            os.environ["pyuiw_QtModule"] = self.opts.QtModule
         if not hasattr(self.opts, "ts"):
             self.opts.ts = self.default_ts_exp
 
@@ -272,23 +263,6 @@ class PyUIWatcherCli(CliBase):
             action="store_true",
             default=False,
             help="generate imports relative to '.'",
-        )
-        g.add_argument(
-            "-nq",
-            "--no-useQt",
-            dest="useQt",
-            action="store_false",
-            default=argparse.SUPPRESS,
-            help="ignore Qt.py module for Qt compat",
-        )
-        g.add_argument(
-            "--QtModule",
-            dest="QtModule",
-            action="store",
-            type=str,
-            default=argparse.SUPPRESS,
-            metavar="module",
-            help="customize import Qt module name (default: Qt) | only work in --no-useQt flag set",
         )
         g.add_argument(
             "-nb",

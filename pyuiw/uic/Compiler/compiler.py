@@ -56,15 +56,10 @@ class UICompiler(UIParser):
         indenter = getIndenter()
         indenter.level = 0
 
-        is_Qt = os.getenv("pyuiw_isUseQt", "true")
-        is_Qt = True if is_Qt == "true" else False
-        module = os.getenv("pyuiw_QtModule", "PySide2")
-        module = "Qt" if is_Qt else module
-        indenter.write("from %s import QtCore" % module)
-        indenter.write("from %s import QtGui" % module)
-        indenter.write("from %s import QtWidgets" % module)
-        if is_Qt:
-            indenter.write("from Qt import QtCompat")
+        indenter.write("from Qt import QtCore")
+        indenter.write("from Qt import QtGui")
+        indenter.write("from Qt import QtWidgets")
+        indenter.write("from Qt import QtCompat")
 
         indenter.write("")
 
