@@ -282,7 +282,8 @@ class QtGui(ProxyNamespace):
         pass
 
     class QFont(ProxyClass):
-        pass
+        def setWeight(self, weight):
+            write_code("QtCompat.QFont.setWeight(%s, %s)" % (self, weight))
 
 
 # These sub-class QWidget but aren't themselves sub-classed.
