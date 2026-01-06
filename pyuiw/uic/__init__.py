@@ -56,7 +56,7 @@ if __name__ == "__main__":
 \tui = %(uiclass)s()
 \tui.setupUi(%(widgetname)s)
 \t%(widgetname)s.show()
-\tsys.exit(app.exec_())
+\tsys.exit(QtCompat.QApplication.exec_())
 """
 
 
