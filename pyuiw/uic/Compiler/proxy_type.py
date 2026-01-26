@@ -20,7 +20,12 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 # 02110-1301 USA
 
-# Import third-party modules
+# Import future modules
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+# Import local modules
 from pyuiw.uic.Compiler.misc import Literal
 from pyuiw.uic.Compiler.misc import moduleMember
 
@@ -44,7 +49,7 @@ class ProxyType(type):
                 raise
 
             # Avoid a circular import.
-            # Import third-party modules
+            # Import local modules
             from pyuiw.uic.Compiler.qtproxies import LiteralProxyClass
 
             return type(
