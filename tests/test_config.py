@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-
-"""
+""" """
 
 # Import future modules
 from __future__ import absolute_import
