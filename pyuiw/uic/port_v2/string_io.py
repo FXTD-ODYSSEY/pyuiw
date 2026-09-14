@@ -21,6 +21,12 @@
 
 
 # Import the StringIO object.
+# Import future modules
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+
 try:
     # Import third-party modules
     from cStringIO import StringIO
