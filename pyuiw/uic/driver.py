@@ -137,9 +137,7 @@ class Driver(object):
             traceback.print_exception(*sys.exc_info())
         else:
 
-            sys.stderr.write(
-                """An unexpected error occurred.
+            sys.stderr.write("""An unexpected error occurred.
 Check that you are using the latest version of PySide2 and report the error to
 http://bugs.openbossa.org, including the ui file used to trigger the error.
-"""
-            )
+""")
