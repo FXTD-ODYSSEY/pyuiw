@@ -20,11 +20,16 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 # 02110-1301 USA
 
+# Import future modules
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 # Import built-in modules
 import os
 import sys
 
-# Import third-party modules
+# Import local modules
 from pyuiw.uic.Compiler import qtproxies
 from pyuiw.uic.Compiler.indenter import createCodeIndenter
 from pyuiw.uic.Compiler.indenter import getIndenter

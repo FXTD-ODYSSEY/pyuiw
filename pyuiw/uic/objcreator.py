@@ -20,20 +20,25 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 # 02110-1301 USA
 
+# Import future modules
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 # Import built-in modules
 import os.path
 import sys
 
-# Import third-party modules
+# Import local modules
 from pyuiw.uic.exceptions import NoSuchWidgetError
 from pyuiw.uic.exceptions import WidgetPluginError
 
 
 if sys.hexversion >= 0x03000000:
-    # Import third-party modules
+    # Import local modules
     from pyuiw.uic.port_v3.load_plugin import load_plugin
 else:
-    # Import third-party modules
+    # Import local modules
     from pyuiw.uic.port_v2.load_plugin import load_plugin
 
 
