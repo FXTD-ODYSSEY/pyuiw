@@ -21,6 +21,12 @@
 
 # If pluginType is MODULE, the plugin loader will call moduleInformation.  The
 # variable MODULE is inserted into the local namespace by the plugin loader.
+# Import future modules
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+
 pluginType = MODULE
 
 
