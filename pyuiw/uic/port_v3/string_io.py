@@ -20,6 +20,11 @@
 # 02110-1301 USA
 
 
+# Import future modules
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 # Import built-in modules
 # Import the StringIO object.
 from io import StringIO
