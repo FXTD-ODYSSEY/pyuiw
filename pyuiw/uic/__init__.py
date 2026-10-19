@@ -1,3 +1,25 @@
+
+
+# The list of directories that are searched for widget plugins.
+
+__all__ = ("compileUi", "compileUiDir", "widgetPluginPath")
+
+__version__ = ""
+
+
+_header = """# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file '%s'
+#
+# Created: %s
+#      by: pyside2-uic %s running on PySide2 %s
+#
+# WARNING! All changes made in this file will be lost!
+
+"""
+
+_display_code = """
+# Import future modules
 # This file is part of the PySide project.
 #
 # Copyright (C) 2009-2011 Nokia Corporation and/or its subsidiary(-ies).
@@ -19,7 +41,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 # 02110-1301 USA
-# Import future modules
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -27,28 +48,9 @@ from __future__ import print_function
 # Import local modules
 from pyuiw.uic.Compiler import compiler
 from pyuiw.uic.Compiler import indenter
-
-# The list of directories that are searched for widget plugins.
 from pyuiw.uic.objcreator import widgetPluginPath
 
 
-__all__ = ("compileUi", "compileUiDir", "widgetPluginPath")
-
-__version__ = ""
-
-
-_header = """# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file '%s'
-#
-# Created: %s
-#      by: pyside2-uic %s running on PySide2 %s
-#
-# WARNING! All changes made in this file will be lost!
-
-"""
-
-_display_code = """
 if __name__ == "__main__":
 \timport sys
 \tapp = QtWidgets.QApplication(sys.argv)
