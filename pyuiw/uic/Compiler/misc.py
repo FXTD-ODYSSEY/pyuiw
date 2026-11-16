@@ -21,7 +21,12 @@
 # 02110-1301 USA
 
 
-# Import third-party modules
+# Import future modules
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+# Import local modules
 from pyuiw.uic.Compiler.indenter import write_code
 
 
