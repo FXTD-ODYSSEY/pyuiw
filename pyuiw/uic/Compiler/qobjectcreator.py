@@ -21,21 +21,27 @@
 # 02110-1301 USA
 
 
+# Import future modules
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 # Import built-in modules
 import logging
 
-
-try:
-    set()
-except NameError:
-    from sets import Set as set
-
-# Import third-party modules
+# Import local modules
 from pyuiw.uic.Compiler.indenter import write_code
 from pyuiw.uic.Compiler.qtproxies import Literal
 from pyuiw.uic.Compiler.qtproxies import QtGui
 from pyuiw.uic.Compiler.qtproxies import QtWidgets
 from pyuiw.uic.Compiler.qtproxies import strict_getattr
+
+
+try:
+    set()
+except NameError:
+    # Import third-party modules
+    from sets import Set as set
 
 
 logger = logging.getLogger(__name__)
